@@ -5,6 +5,8 @@
     <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "ml-2 btn-danger text-xm" %>
   </div>
 <% else %>
-  <%= link_to "Sign up", new_user_registration_path, class: "btn-sm" %> |
+  <div class="ml-auto">
+  <%= link_to "Sign up", new_user_registration_path, class: "btn-sm" %> 
   <%= link_to "Login", new_user_session_path, class: "btn-sm ml-2" %>
+  </div>
 <% end %>
