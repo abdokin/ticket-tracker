@@ -1,0 +1,10 @@
+<% if user_signed_in? %>
+  <div class="flex items-center">
+    <span class="text-sm">Welcome <%= current_user.email %></span>
+    <%= link_to "profile", edit_user_registration_path, class: "btn-sm ml-2" %>
+    <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "ml-2 btn-danger text-xm" %>
+  </div>
+<% else %>
+  <%= link_to "Sign up", new_user_registration_path, class: "btn-sm" %> |
+  <%= link_to "Login", new_user_session_path, class: "btn-sm ml-2" %>
+<% end %>
