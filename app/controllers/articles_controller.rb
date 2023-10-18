@@ -2,12 +2,17 @@ class ArticlesController < ApplicationController
   layout "show_layout", only: [:show]
   before_action :authenticate_user!, except: [:show]
 
-
-  before_action :set_article, only:
-   %i[ show edit update destroy generate_qr_code_sm generate_qr_code_lg ]
+  before_action :set_article, only: %i[ show edit update destroy generate_qr_code_sm generate_qr_code_lg ]
 
   def index
-    @articles = Article.all
+    @query = params[:search]
+
+    if @query.present?
+      # Check if the search query matches the format of an 8-digit number
+        @articles = Article.where("code LIKE ?", "%#{@query}%")
+    else
+      @articles = Article.all
+    end
   end
 
   def show
@@ -45,7 +50,7 @@ class ArticlesController < ApplicationController
     image = MiniMagick::Image.read(qr_code.to_s)
     text = "#{@article.code}"
     text_size = 10
-    text_x = (image.width / 2) - (text_size * text.length / 2) 
+    text_x = (image.width / 2) - (text_size * text.length / 2)
     text_y = (image.height / 2) - (text_size / 2) - 2
     image.combine_options do |c|
       c.gravity "center"
@@ -56,6 +61,7 @@ class ArticlesController < ApplicationController
     end
     send_data image.to_blob, type: "image/png", disposition: "inline"
   end
+
   def generate_qr_code_lg
     data = article_url(@article)
     qr = RQRCode::QRCode.new(data, size: 4, level: :h)

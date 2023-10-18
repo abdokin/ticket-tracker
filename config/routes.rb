@@ -3,6 +3,8 @@ Rails.application.routes.draw do
     member do
       get 'generate_qr_code_lg'
       get 'generate_qr_code_sm'
+      get 'search'
+
 
     end
   end

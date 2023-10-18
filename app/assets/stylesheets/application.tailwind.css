@@ -12,6 +12,11 @@
     background-color: black;
   }
 
+
+  .bg-red-600 {
+    color: red
+  }
+
   .text-white {
     color: white;
   }
@@ -19,19 +24,17 @@
   .border-black {
     border-color: black;
   }
+  .text-red-100{
+    color: rgb(247, 64, 64);
+  }
 
   .btn-sm {
     @apply inline-block px-2 py-1.5 text-sm font-medium uppercase border rounded-lg transition hover:bg-black hover:text-white hover:border-black text-xs;
   }
-  .bg-red-600 {
-    background-color:#F40B27
-  }
-  .bg-red-900 {
-    background-color:#990214
-  }
+
 
   .btn-danger {
-    @apply inline-block bg-red-600 px-2 py-1.5 text-sm font-medium uppercase border rounded-lg transition hover:bg-red-900 text-white hover:border-black text-xs;
+    @apply inline-block bg-red-600 px-2 py-1.5 text-sm font-medium uppercase border rounded-lg transition hover:border-black text-xs;
   }
 }
 
@@ -40,3 +43,4 @@ img {
   width: 100%;
   height: auto;
 }
+

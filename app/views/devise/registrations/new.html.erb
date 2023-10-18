@@ -1,0 +1,33 @@
+<div class="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md text-black">
+  <h2 class="text-3xl font-semibold text-center mb-4">Sign up</h2>
+
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'space-y-4' }) do |f| %>
+    <div class="space-y-2">
+      <%= f.label :name, class: 'block font-medium' %>
+      <%= f.text_field :name, autocomplete: "name", class: 'block w-full rounded border py-2 px-3 text-gray-700' %>
+    </div>
+
+    <div class="space-y-2">
+      <%= f.label :email, class: 'block font-medium' %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'block w-full rounded border py-2 px-3 text-gray-700' %>
+    </div>
+
+    <div class="space-y-2">
+      <%= f.label :password, class: 'block font-medium' %>
+      <% if @minimum_password_length %>
+        <em>(<%= @minimum_password_length %> characters minimum)</em>
+      <% end %><br />
+      <%= f.password_field :password, autocomplete: "new-password", class: 'block w-full rounded border py-2 px-3 text-gray-700' %>
+    </div>
+
+    <div class="space-y-2">
+      <%= f.label :password_confirmation, class: 'block font-medium' %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'block w-full rounded border py-2 px-3 text-gray-700' %>
+    </div>
+
+    <div class="flex justify-between">
+      <div><%= render "devise/shared/links" %></div>
+      <%= f.submit "Sign up", class: 'bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded cursor-pointer' %>
+    </div>
+  <% end %>
+</div>

@@ -1,8 +1,7 @@
 <% if user_signed_in? %>
   <div class="flex items-center">
-    <span class="text-sm">Welcome <%= current_user.email %></span>
+    <span class="text-sm">Welcome <span class="font-semibold hover:underline"><%= current_user.name %></span></span>
     <%= link_to "profile", edit_user_registration_path, class: "btn-sm ml-2" %>
-    <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "ml-2 btn-danger text-xm" %>
   </div>
 <% else %>
   <div class="ml-auto">

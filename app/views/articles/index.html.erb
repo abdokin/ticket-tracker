@@ -1,11 +1,86 @@
 <div class="w-full">
   <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl ">Articles</h1>
-    <%= link_to "New article", new_article_path, class: "btn-sm" %>
+    <h1 class="font-bold text-4xl">Articles</h1>
+    <div>    <%= link_to "New article", new_article_path, class: "btn-sm" %>
+    <button class="btn-sm" id="select-all">Select All</button></div>
   </div>
 
-<br/>
-  <div id="articles" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4  ">
-    <%= render @articles %>
+  <br/>
+
+  <%= form_tag(articles_path, method: :get, class: "") do %>
+    <%= text_field_tag :search, params[:search], placeholder: "Search...", class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  <% end %>
+
+  <br/>
+
+  <div id="articles" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <% if @articles.any? %>
+      <%= render @articles %>
+    <% else %>
+      <p>No articles found.</p>
+    <% end %>
   </div>
 </div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var all_selected = false
+    
+    const cards = document.querySelectorAll(".selectable-card");
+    const selectAllBtn = document.getElementById("select-all");
+
+    selectAllBtn.addEventListener("click",function(event) {
+      all_selected = !all_selected;
+      cards.forEach((card) => {
+        const checkbox = card.querySelector("input[type=checkbox]");
+        checkbox.checked  = all_selected;
+        if(!all_selected) {
+      card.parentElement.classList.remove("card_selected");
+    }else{
+        card.parentElement.classList.add("card_selected");
+
+    }
+      });
+      if(all_selected) {
+      card.parentElement.classList.add("card_selected");
+    
+        selectAllBtn.textContent = "deselect All"
+      }else { 
+        selectAllBtn.textContent = "select All"
+
+      }
+    })    
+    cards.forEach((card) => {
+      const checkbox = card.querySelector("input[type=checkbox]");
+
+      // Update the 'selected' class based on the initial checkbox state
+      if (checkbox.checked) {
+        card.parentElement.classList.add("card_selected");
+      } else {
+        card.parentElement.classList.remove("card_selected");
+      }
+
+      card.addEventListener("click", function (event) {
+        // Prevent the checkbox's default click behavior
+        console.log(card.parentElement.classList);
+        event.preventDefault();
+
+        // Toggle the checkbox's checked state
+        checkbox.checked = !checkbox.checked;
+
+        // Toggle the 'selected' class on the card
+        card.parentElement.classList.toggle("card_selected");
+      });
+
+
+
+    });
+  });
+</script>
+<style>
+.card_selected {
+  border: 2px solid blue !important;
+  /* Change the border to indicate selection */
+}
+</style>
