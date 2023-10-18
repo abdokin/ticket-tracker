@@ -1,11 +1,13 @@
-<div class="flex items-center border-b-2 border-black bg-white px-2 md:px-4">
-  <img src="https://cdn.icon-icons.com/icons2/3911/PNG/512/bim_logo_icon_247473.png" class="md:w-22 w-20" alt="Bim Logo" />
+<div class="flex items-center border-b-2 border-black bg-white px-2 md:px-4" style="background: black; color:white; padding: 1em">
+  <img
+    src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Bim_%28company%29_logo.svg/1200px-Bim_%28company%29_logo.svg.png"
+    class="md:w-22 w-20" alt="Bim Logo" />
 <h1 class="ml-auto text-xl font-bold md:text-5xl">
   <% if @article.name.split.size > 4 %>
-    <span class="text-xl font-semibold md:text-5xl">
+    <span class="text-2xl font-semibold md:text-5xl">
       <%= @article.name.split(" ").first(4).join(" ") %>
     </span>
-    <span class="text-base font-semibold md:text-3xl">
+    <span class="text-xl font-semibold md:text-3xl">
       <%= @article.name.split(" ").drop(4).join(" ") %>
     </span>
   <% else %>
