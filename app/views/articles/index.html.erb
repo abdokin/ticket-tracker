@@ -2,7 +2,11 @@
   <div class="flex justify-between items-center">
     <h1 class="font-bold text-4xl">Articles</h1>
     <div>    <%= link_to "New article", new_article_path, class: "btn-sm" %>
-    <button class="btn-sm" id="select-all">Select All</button></div>
+    <button class="btn-sm" id="select-all">Select All</button>
+    <button class="btn-sm hidden" id="lg-qr-all" >Download sm QR</button>
+    <button class="btn-sm hidden" id="sm-qr-all">Download lg QR</button>
+    </div>
+
   </div>
 
   <br/>
@@ -29,6 +33,10 @@
     
     const cards = document.querySelectorAll(".selectable-card");
     const selectAllBtn = document.getElementById("select-all");
+    const downloadAllQrLgBtn = document.getElementById("lg-qr-all");
+    const downloadAllQrSmBtn = document.getElementById("sm-qr-all");
+
+
 
     selectAllBtn.addEventListener("click",function(event) {
       all_selected = !all_selected;
@@ -46,8 +54,13 @@
       card.parentElement.classList.add("card_selected");
     
         selectAllBtn.textContent = "deselect All"
+        downloadAllQrLgBtn.classList.remove("hidden")
+        downloadAllQrSmBtn.classList.remove("hidden")
       }else { 
         selectAllBtn.textContent = "select All"
+        downloadAllQrLgBtn.classList.add("hidden")
+        downloadAllQrSmBtn.classList.add("hidden")
+
 
       }
     })    

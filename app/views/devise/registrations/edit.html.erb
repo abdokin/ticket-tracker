@@ -40,8 +40,9 @@
       <%= link_to "Back", :back, class: 'hover:underline' %>
       <div>
         <%= f.submit "Update", class: 'btn-sm' %>
-        <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "ml-2 bg-red-700 btn-sm text-xm" %>
       </div>
     </div>
   <% end %>
+        <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "ml-2 bg-red-700 btn-sm text-xm" %>
+
 </div>
