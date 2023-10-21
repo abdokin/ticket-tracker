@@ -1,20 +1,23 @@
-<div class="flex items-center border-b-2 border-black bg-white px-2 md:px-4" style="background: black; color:white; padding: 1em">
+<div class="flex items-center border-b-2 border-black bg-white px-2 md:px-4 justify-between" style="background: black; color:white; padding: 1em">
   <img
     src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Bim_%28company%29_logo.svg/1200px-Bim_%28company%29_logo.svg.png"
     class="md:w-22 w-20" alt="Bim Logo" />
-<h1 class="ml-auto text-xl font-bold md:text-5xl">
-  <% if @article.name.split.size > 4 %>
-    <span class="text-2xl font-semibold md:text-5xl">
+      <% if @article.name.split.size.between?(5, 7) %>
+      <h1 class="ml-auto font-bold text-2xl md:text-5xl px-2">
+        <span class="font-semibold text-2xl md:text-5xl">
+          <%= @article.name.split(" ").first(4).join(" ") %>
+        </span>
+        <span class="font-semibold text-xl md:text-3xl">
+          <%= @article.name.split(" ").drop(4).join(" ") %>
+        </span>
+      </h1>
+    <% else %>
+      <h1 class="ml-auto font-bold text-xl px-2">
       <%= @article.name.split(" ").first(4).join(" ") %>
-    </span>
-    <span class="text-xl font-semibold md:text-3xl">
-      <%= @article.name.split(" ").drop(4).join(" ") %>
-    </span>
-  <% else %>
-    <%= @article.name %>
-  <% end %>
-  
-</h1>
+      </h1>
+    <% end %>
+    
+    
 
 </div>
 <!-- Body -->
@@ -51,4 +54,8 @@
     <p class="text-xl text-gray-600">No photo available</p>
   <% end %>
   </div>
+
+  <p class="ml-auto font-bold text-xl w-fit px-4">
+      <%= @article.name %>
+      </p>
 </div>

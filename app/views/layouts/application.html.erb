@@ -36,9 +36,17 @@
       .bg-yellow-400{
         background-color: #facc15
       }
+      .bg-image {
+        background-image: url('/bg-bim.svg'); /* Path to your SVG in the "public" folder */
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed; /* Optional - keeps the background fixed while scrolling */
+        background-position: center center;
+        min-height: 100%;
+      }
     </style>
 
-  <body class="flex flex-col">
+  <body class="flex flex-col bg-image">
     <%= render "/partials/alert" %>
     <%= render "/partials/notice" %>
     <%= render "/partials/nav" %>

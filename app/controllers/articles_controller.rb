@@ -42,15 +42,15 @@ class ArticlesController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
-
+ 
   def generate_qr_code_sm
     data = article_url(@article)
-    qr = RQRCode::QRCode.new(data, size: 5, level: :h)
-    qr_code = qr.as_png(size: 100)
+    qr = RQRCode::QRCode.new(data, size: 8, level: :h)
+    qr_code = qr.as_png(size: 130)
     image = MiniMagick::Image.read(qr_code.to_s)
     text = "#{@article.code}"
     text_size = 10
-    text_x = (image.width / 2) - (text_size * text.length / 2)
+    text_x = (image.width / 2) - (text_size * text.length / 2)  - 20
     text_y = (image.height / 2) - (text_size / 2) - 2
     image.combine_options do |c|
       c.gravity "center"
@@ -61,16 +61,16 @@ class ArticlesController < ApplicationController
     end
     send_data image.to_blob, type: "image/png", disposition: "inline"
   end
-
+  
   def generate_qr_code_lg
     data = article_url(@article)
-    qr = RQRCode::QRCode.new(data, size: 4, level: :h)
+    qr = RQRCode::QRCode.new(data, size: 8, level: :h)
     qr_code = qr.as_png(size: 200)
     image = MiniMagick::Image.read(qr_code.to_s)
-    text = "#{@article.code}"
+    text = @article.code
     text_size = 16
-    text_x = (image.width / 2) - (text_size * text.length / 2) - 20
-    text_y = (image.height / 2) - (text_size / 2) - 10
+    text_x = (image.width / 2) - (text_size * text.length / 2) - 30
+    text_y = (image.height / 2) - (text_size / 2) - 8
     image.combine_options do |c|
       c.gravity "center"
       c.fill "black"
@@ -80,7 +80,7 @@ class ArticlesController < ApplicationController
     end
     send_data image.to_blob, type: "image/png", disposition: "inline"
   end
-
+  
   def destroy
     @article.destroy
     redirect_to articles_url, notice: "Article was successfully destroyed."
