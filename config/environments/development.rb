@@ -70,6 +70,11 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
 
+  MiniMagick.configure do |config|
+    config.validate_on_create = false
+    config.validate_on_write = false
+  end
+
 
   config.hosts << "3000-abdokin-tickettracker-soydqux0ku8.ws-eu105.gitpod.io"
   config.hosts << "3000-abdokin-tickettracker-soydqux0ku8.ws-eu105.gitpod.io"

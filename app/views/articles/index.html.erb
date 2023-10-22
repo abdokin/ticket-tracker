@@ -2,21 +2,15 @@
   <div class="flex justify-between items-center">
     <h1 class="font-bold text-4xl">Articles</h1>
     <div>    <%= link_to "New article", new_article_path, class: "btn-sm" %>
-    <button class="btn-sm" id="select-all">Select All</button>
-    <button class="btn-sm hidden" id="lg-qr-all" >Download sm QR</button>
-    <button class="btn-sm hidden" id="sm-qr-all">Download lg QR</button>
+      <button class="btn-sm" id="select-all">Select All</button>
+      <button class="btn-sm hidden" id="qr-all" >Download ALL QR</button>
     </div>
-
   </div>
-
   <br/>
-
   <%= form_tag(articles_path, method: :get, class: "") do %>
     <%= text_field_tag :search, params[:search], placeholder: "Search...", class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
   <% end %>
-
   <br/>
-
   <div id="articles" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
     <% if @articles.any? %>
       <%= render @articles %>
@@ -26,80 +20,120 @@
   </div>
 </div>
 
-
-
+<style>
+  .card_selected {
+    border: 2px solid blue !important;
+    /* Change the border to indicate selection */
+  }
+</style>
 
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    var all_selected = false
-    
-    const cards = document.querySelectorAll(".selectable-card");
-    const selectAllBtn = document.getElementById("select-all");
-    const downloadAllQrLgBtn = document.getElementById("lg-qr-all");
-    const downloadAllQrSmBtn = document.getElementById("sm-qr-all");
+  var all_selected = false;
+  const csrfToken = "<%= form_authenticity_token %>";
 
+  var selectedIds = []; // To store the selected article IDs
 
+  const cards = document.querySelectorAll(".selectable-card");
+  const selectAllBtn = document.getElementById("select-all");
+  const downloadAllQrBtn = document.getElementById("qr-all");
 
-    selectAllBtn.addEventListener("click",function(event) {
-      all_selected = !all_selected;
-      cards.forEach((card) => {
-        const checkbox = card.querySelector("input[type=checkbox]");
-        checkbox.checked  = all_selected;
-        if(!all_selected) {
-      card.parentElement.classList.remove("card_selected");
-    }else{
-        card.parentElement.classList.add("card_selected");
-
-    }
-      });
-      if(all_selected) {
-      card.parentElement.classList.add("card_selected");
-    
-        selectAllBtn.textContent = "deselect All"
-        downloadAllQrLgBtn.classList.remove("hidden")
-        downloadAllQrSmBtn.classList.remove("hidden")
-      }else { 
-        selectAllBtn.textContent = "select All"
-        downloadAllQrLgBtn.classList.add("hidden")
-        downloadAllQrSmBtn.classList.add("hidden")
-
-
-      }
-    })    
+  // Helper function to update the selected IDs array
+  function updateSelectedIds() {
+    selectedIds = [];
     cards.forEach((card) => {
       const checkbox = card.querySelector("input[type=checkbox]");
-
-      // Update the 'selected' class based on the initial checkbox state
       if (checkbox.checked) {
-        card.parentElement.classList.add("card_selected");
-      } else {
-        card.parentElement.classList.remove("card_selected");
+        const articleId = card.getAttribute("data-article-id");
+        selectedIds.push(articleId);
       }
+    });
+    if(selectedIds.length > 0) {
+      downloadAllQrBtn.classList.remove("hidden");
+    }else{
+      downloadAllQrBtn.classList.add("hidden");
+    }
+  }
 
-      card.addEventListener("click", function (event) {
-        // Prevent the checkbox's default click behavior
-        console.log(card.parentElement.classList);
-        event.preventDefault();
 
-        // Toggle the checkbox's checked state
-        checkbox.checked = !checkbox.checked;
 
-        // Toggle the 'selected' class on the card
-        card.parentElement.classList.toggle("card_selected");
+  downloadAllQrBtn.addEventListener("click", function (event) {
+    event.preventDefault();
+    console.log(selectedIds);
+
+    // Prepare the JSON data
+    const jsonData = JSON.stringify({  selectedIds });
+
+    // Make a POST request to the generate_all_sm endpoint
+    fetch('/generate_all_qrs', {
+      method: 'POST',
+      
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken, // Include the CSRF token here
+
+      },
+      body: jsonData
+    })
+      .then(response => {
+        if (response.ok) {
+          // Success: Download the generated QR codes
+          response.blob().then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'merged_qr_codes.png';
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+          });
+        } else {
+          // Handle errors
+          console.error('Failed to generate QR codes:', response.status, response.statusText);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
       });
+  });
 
+  selectAllBtn.addEventListener("click", function (event) {
+    all_selected = !all_selected;
+    cards.forEach((card) => {
+      const checkbox = card.querySelector("input[type=checkbox]");
+      checkbox.checked = all_selected;
+      if (!all_selected) {
+        card.parentElement.classList.remove("card_selected");
+        selectAllBtn.textContent = "Select All";
+     
+      } else {
+        card.parentElement.classList.add("card_selected");
+        selectAllBtn.textContent = "Deselect All";
+      }
+    });
 
+    // Update the selected IDs
+    updateSelectedIds();
+  });
 
+  cards.forEach((card) => {
+    const checkbox = card.querySelector("input[type=checkbox]");
+
+    if (checkbox.checked) {
+      card.parentElement.classList.add("card_selected");
+    } else {
+      card.parentElement.classList.remove("card_selected");
+    }
+
+    card.addEventListener("click", function (event) {
+      event.preventDefault();
+      checkbox.checked = !checkbox.checked;
+      card.parentElement.classList.toggle("card_selected");
+      updateSelectedIds();
     });
   });
+});
+
 </script>
-<style>
-.card_selected {
-  border: 2px solid blue !important;
-  /* Change the border to indicate selection */
-}
-</style>
-
-
-
