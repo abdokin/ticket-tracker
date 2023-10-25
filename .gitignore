@@ -36,3 +36,4 @@
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+public/qr_codes_20231024115744.png

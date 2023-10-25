@@ -29,6 +29,6 @@ rails server -b 192.168.11.116
 fix the font issue 
 sudo apt-get install fonts-helvetica
 
- sudo apt-get install ttf-mscorefonts-installer
+sudo apt-get install ttf-mscorefonts-installer
 
  gem install htmlbeautifier

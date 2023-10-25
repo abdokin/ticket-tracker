@@ -6,7 +6,7 @@ class ArticlesController < ApplicationController
 
   def index
     @query = params[:search]
-    flash[:alert] = "Welcome to the home page!"
+    # flash[:alert] = "Welcome to the home page!"
 
     if @query.present?
       # Check if the search query matches the format of an 8-digit number
